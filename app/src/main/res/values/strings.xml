@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">Моите задачи</string>
+
+    <string name="title_new_task">Нова задача</string>
+    <string name="title_edit_task">Редакция на задача</string>
+
+    <string name="filter_all">Всички</string>
+    <string name="filter_active">Активни</string>
+    <string name="filter_done">Завършени</string>
+    <string name="empty_list">Няма задачи.\nНатисни + за да добавиш първата.</string>
+    <string name="add_task">Добави задача</string>
+    <string name="mark_done">Отбележи като завършена</string>
+    <string name="search">Търсене</string>
+    <string name="search_hint">Търси в задачите…</string>
+    <string name="task_deleted">Задачата е изтрита</string>
+    <string name="undo">Отмени</string>
+    <string name="delete_completed">Изтрий завършените</string>
+    <string name="delete_completed_message">Всички завършени задачи ще бъдат изтрити.</string>
+    <string name="due_on">Срок: %1$s</string>
+    <string name="due_overdue">Просрочена: %1$s</string>
+
+    <string name="hint_title">Заглавие</string>
+    <string name="hint_description">Описание (по желание)</string>
+    <string name="label_priority">Приоритет</string>
+    <string name="priority_low">Нисък</string>
+    <string name="priority_medium">Среден</string>
+    <string name="priority_high">Висок</string>
+    <string name="label_due_date">Краен срок</string>
+    <string name="pick_due_date">Избери дата</string>
+    <string name="clear_due_date">Без срок</string>
+    <string name="suggest_task">Предложи ми задача (от интернет)</string>
+    <string name="suggestion_error">Неуспешна заявка. Провери интернет връзката.</string>
+    <string name="save">Запази</string>
+    <string name="delete_task">Изтрий задачата</string>
+    <string name="delete_task_message">Задачата ще бъде изтрита завинаги.</string>
+    <string name="delete">Изтрий</string>
+    <string name="cancel">Отказ</string>
+    <string name="error_title_empty">Въведи заглавие</string>
+    <string name="error_title_too_long">Заглавието е твърде дълго (до 80 знака)</string>
+</resources>
