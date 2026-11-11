@@ -17,19 +17,25 @@ import androidx.lifecycle.Lifecycle;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.navigation.fragment.NavHostFragment;
 import androidx.recyclerview.widget.ItemTouchHelper;
-import androidx.recyclerview.widget.RecyclerView;
 
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 import com.google.android.material.snackbar.Snackbar;
 
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
+import java.util.Date;
+import java.util.Locale;
+
 import bg.mobileapps.fn2401321025.R;
 import bg.mobileapps.fn2401321025.data.local.Task;
 import bg.mobileapps.fn2401321025.databinding.FragmentTaskListBinding;
+import bg.mobileapps.fn2401321025.domain.Greeting;
 import bg.mobileapps.fn2401321025.domain.TaskFilter;
+import bg.mobileapps.fn2401321025.domain.TaskStats;
 import bg.mobileapps.fn2401321025.ui.ViewModelFactory;
 import bg.mobileapps.fn2401321025.ui.edit.TaskEditFragment;
 
-/** Първи екран: списък със задачите, търсене, филтър, изтриване с плъзгане. */
+/** Първи екран: поздрав и напредък, списък със задачите, търсене, филтър, изтриване. */
 public class TaskListFragment extends Fragment implements TaskAdapter.Listener {
 
     private FragmentTaskListBinding binding;
@@ -50,11 +56,16 @@ public class TaskListFragment extends Fragment implements TaskAdapter.Listener {
 
         TaskAdapter adapter = new TaskAdapter(this);
         binding.listTasks.setAdapter(adapter);
-        attachSwipeToDelete(adapter);
+        new ItemTouchHelper(new SwipeToDeleteCallback(requireContext(),
+                position -> deleteWithUndo(adapter.getCurrentList().get(position))))
+                .attachToRecyclerView(binding.listTasks);
+
+        bindHeader();
+        viewModel.getStats().observe(getViewLifecycleOwner(), this::showStats);
 
         viewModel.getTasks().observe(getViewLifecycleOwner(), tasks -> {
             adapter.submitList(tasks);
-            binding.textEmpty.setVisibility(tasks.isEmpty() ? View.VISIBLE : View.GONE);
+            showEmptyState(tasks.isEmpty());
         });
 
         binding.fabAdd.setOnClickListener(v -> openEditor(TaskEditFragment.NEW_TASK_ID));
@@ -87,32 +98,64 @@ public class TaskListFragment extends Fragment implements TaskAdapter.Listener {
         viewModel.setDone(task, done);
     }
 
+    private void bindHeader() {
+        Calendar now = Calendar.getInstance();
+        binding.textGreeting.setText(greetingText(
+                Greeting.forHour(now.get(Calendar.HOUR_OF_DAY))));
+
+        String date = new SimpleDateFormat("EEEE, d MMMM", Locale.getDefault())
+                .format(new Date(now.getTimeInMillis()));
+        binding.textDate.setText(capitalize(date));
+    }
+
+    private void showStats(TaskStats stats) {
+        if (stats.total == 0) {
+            binding.textProgress.setText(R.string.progress_no_tasks);
+        } else if (stats.allDone()) {
+            binding.textProgress.setText(R.string.progress_all_done);
+        } else {
+            binding.textProgress.setText(
+                    getString(R.string.progress_done_of, stats.done, stats.total));
+        }
+        binding.textPercent.setText(getString(R.string.progress_percent, stats.percent()));
+        binding.progressTasks.setProgressCompat(stats.percent(), true);
+    }
+
+    private void showEmptyState(boolean empty) {
+        binding.emptyState.setVisibility(empty ? View.VISIBLE : View.GONE);
+        if (!empty) {
+            return;
+        }
+        TaskStats stats = viewModel.getStats().getValue();
+        boolean noTasksAtAll = stats == null || stats.total == 0;
+        binding.textEmptyTitle.setText(noTasksAtAll
+                ? R.string.empty_title : R.string.empty_filtered_title);
+        binding.textEmptyMessage.setText(noTasksAtAll
+                ? R.string.empty_message : R.string.empty_filtered_message);
+    }
+
+    private int greetingText(Greeting greeting) {
+        switch (greeting) {
+            case MORNING:
+                return R.string.greeting_morning;
+            case DAY:
+                return R.string.greeting_day;
+            default:
+                return R.string.greeting_evening;
+        }
+    }
+
+    private static String capitalize(String text) {
+        if (text.isEmpty()) {
+            return text;
+        }
+        return text.substring(0, 1).toUpperCase(Locale.getDefault()) + text.substring(1);
+    }
+
     private void openEditor(long taskId) {
         Bundle args = new Bundle();
         args.putLong(TaskEditFragment.ARG_TASK_ID, taskId);
         NavHostFragment.findNavController(this).navigate(R.id.action_list_to_edit, args);
-    }
-
-    private void attachSwipeToDelete(TaskAdapter adapter) {
-        ItemTouchHelper.SimpleCallback callback = new ItemTouchHelper.SimpleCallback(
-                0, ItemTouchHelper.LEFT | ItemTouchHelper.RIGHT) {
-            @Override
-            public boolean onMove(@NonNull RecyclerView recyclerView,
-                    @NonNull RecyclerView.ViewHolder viewHolder,
-                    @NonNull RecyclerView.ViewHolder target) {
-                return false;
-            }
-
-            @Override
-            public void onSwiped(@NonNull RecyclerView.ViewHolder viewHolder, int direction) {
-                int position = viewHolder.getBindingAdapterPosition();
-                if (position == RecyclerView.NO_POSITION) {
-                    return;
-                }
-                deleteWithUndo(adapter.getCurrentList().get(position));
-            }
-        };
-        new ItemTouchHelper(callback).attachToRecyclerView(binding.listTasks);
     }
 
     private void deleteWithUndo(Task task) {

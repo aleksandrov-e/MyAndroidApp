@@ -6,7 +6,9 @@ import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import bg.mobileapps.fn2401321025.data.TaskRepository;
 import bg.mobileapps.fn2401321025.data.local.Task;
@@ -18,7 +20,7 @@ public class FakeTaskRepository implements TaskRepository {
     public String lastQuery;
     public String suggestionToReturn;
     public int suggestionRequests;
-    private final MutableLiveData<List<Task>> liveTasks = new MutableLiveData<>();
+    private final Map<String, MutableLiveData<List<Task>>> liveByQuery = new HashMap<>();
     private long nextId = 1;
 
     public Task add(String title, boolean done) {
@@ -34,8 +36,13 @@ public class FakeTaskRepository implements TaskRepository {
     @Override
     public LiveData<List<Task>> observeTasks(@NonNull String query) {
         lastQuery = query;
+        MutableLiveData<List<Task>> live = liveByQuery.get(query);
+        if (live == null) {
+            live = new MutableLiveData<>();
+            liveByQuery.put(query, live);
+        }
         publish();
-        return liveTasks;
+        return live;
     }
 
     @Override
@@ -104,12 +111,14 @@ public class FakeTaskRepository implements TaskRepository {
     }
 
     private void publish() {
-        List<Task> matching = new ArrayList<>();
-        for (Task task : tasks) {
-            if (lastQuery == null || task.title.contains(lastQuery)) {
-                matching.add(task);
+        for (Map.Entry<String, MutableLiveData<List<Task>>> entry : liveByQuery.entrySet()) {
+            List<Task> matching = new ArrayList<>();
+            for (Task task : tasks) {
+                if (task.title.contains(entry.getKey())) {
+                    matching.add(task);
+                }
             }
+            entry.getValue().setValue(matching);
         }
-        liveTasks.setValue(matching);
     }
 }

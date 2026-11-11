@@ -15,6 +15,7 @@ import org.junit.Test;
 import bg.mobileapps.fn2401321025.FakeTaskRepository;
 import bg.mobileapps.fn2401321025.R;
 import bg.mobileapps.fn2401321025.data.local.Task;
+import bg.mobileapps.fn2401321025.domain.TaskCategory;
 
 public class TaskEditViewModelTest {
 
@@ -34,7 +35,7 @@ public class TaskEditViewModelTest {
     public void save_withEmptyTitle_showsErrorAndSavesNothing() {
         viewModel.start(-1);
 
-        viewModel.save("   ", "", Task.PRIORITY_LOW);
+        viewModel.save("   ", "", Task.PRIORITY_LOW, TaskCategory.PERSONAL);
 
         assertEquals(Integer.valueOf(R.string.error_title_empty),
                 viewModel.getTitleError().getValue());
@@ -47,13 +48,15 @@ public class TaskEditViewModelTest {
         viewModel.start(-1);
         viewModel.setDueDate(1_000L);
 
-        viewModel.save("  Купи хляб ", " пълнозърнест ", Task.PRIORITY_HIGH);
+        viewModel.save("  Купи хляб ", " пълнозърнест ", Task.PRIORITY_HIGH,
+                TaskCategory.SHOPPING);
 
         assertEquals(1, repository.tasks.size());
         Task saved = repository.tasks.get(0);
         assertEquals("Купи хляб", saved.title);
         assertEquals("пълнозърнест", saved.description);
         assertEquals(Task.PRIORITY_HIGH, saved.priority);
+        assertEquals(TaskCategory.SHOPPING.id, saved.category);
         assertEquals(Long.valueOf(1_000L), saved.dueDate);
         assertFalse(saved.done);
         assertNotNull(viewModel.getFinished().getValue());
@@ -76,7 +79,7 @@ public class TaskEditViewModelTest {
         Task existing = repository.add("Стара задача", true);
         viewModel.start(existing.id);
 
-        viewModel.save("Нова задача", "", Task.PRIORITY_LOW);
+        viewModel.save("Нова задача", "", Task.PRIORITY_LOW, TaskCategory.PERSONAL);
 
         assertEquals(1, repository.tasks.size());
         Task saved = repository.find(existing.id);
@@ -104,7 +107,7 @@ public class TaskEditViewModelTest {
 
     @Test
     public void onTitleChanged_clearsError() {
-        viewModel.save("", "", Task.PRIORITY_LOW);
+        viewModel.save("", "", Task.PRIORITY_LOW, TaskCategory.PERSONAL);
 
         viewModel.onTitleChanged();
 

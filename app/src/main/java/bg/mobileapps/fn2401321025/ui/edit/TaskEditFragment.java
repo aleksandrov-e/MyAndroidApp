@@ -30,6 +30,7 @@ import bg.mobileapps.fn2401321025.R;
 import bg.mobileapps.fn2401321025.data.local.Task;
 import bg.mobileapps.fn2401321025.databinding.FragmentTaskEditBinding;
 import bg.mobileapps.fn2401321025.domain.DueDates;
+import bg.mobileapps.fn2401321025.domain.TaskCategory;
 import bg.mobileapps.fn2401321025.ui.ViewModelFactory;
 
 /** Втори екран: създаване на нова задача или редакция/изтриване на съществуваща. */
@@ -93,6 +94,7 @@ public class TaskEditFragment extends Fragment {
                 binding.inputTitle.setText(task.title);
                 binding.inputDescription.setText(task.description);
                 binding.togglePriority.check(buttonFor(task.priority));
+                binding.chipGroupCategory.check(chipFor(TaskCategory.fromId(task.category)));
             }
         });
 
@@ -155,7 +157,35 @@ public class TaskEditFragment extends Fragment {
         binding.buttonSave.setOnClickListener(v -> viewModel.save(
                 String.valueOf(binding.inputTitle.getText()),
                 String.valueOf(binding.inputDescription.getText()),
-                selectedPriority()));
+                selectedPriority(),
+                selectedCategory()));
+    }
+
+    private TaskCategory selectedCategory() {
+        int checked = binding.chipGroupCategory.getCheckedChipId();
+        if (checked == R.id.chip_category_study) {
+            return TaskCategory.STUDY;
+        }
+        if (checked == R.id.chip_category_work) {
+            return TaskCategory.WORK;
+        }
+        if (checked == R.id.chip_category_shopping) {
+            return TaskCategory.SHOPPING;
+        }
+        return TaskCategory.PERSONAL;
+    }
+
+    private static int chipFor(TaskCategory category) {
+        switch (category) {
+            case STUDY:
+                return R.id.chip_category_study;
+            case WORK:
+                return R.id.chip_category_work;
+            case SHOPPING:
+                return R.id.chip_category_shopping;
+            default:
+                return R.id.chip_category_personal;
+        }
     }
 
     private void showDatePicker() {

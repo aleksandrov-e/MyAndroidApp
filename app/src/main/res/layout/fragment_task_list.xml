@@ -4,10 +4,83 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-    <LinearLayout
+    <!-- Картата с поздрава се скрива при скролиране, чиповете остават закачени горе. -->
+    <com.google.android.material.appbar.AppBarLayout
+        android:id="@+id/app_bar"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:orientation="vertical">
+        android:layout_height="wrap_content"
+        android:background="?attr/colorSurface"
+        app:elevation="0dp"
+        app:liftOnScroll="false">
+
+        <com.google.android.material.card.MaterialCardView
+            android:id="@+id/card_header"
+            style="@style/Widget.Material3.CardView.Filled"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginHorizontal="16dp"
+            android:layout_marginTop="4dp"
+            android:layout_marginBottom="12dp"
+            app:cardBackgroundColor="@color/header_background"
+            app:cardCornerRadius="28dp"
+            app:layout_scrollFlags="scroll|enterAlways">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:padding="20dp">
+
+                <TextView
+                    android:id="@+id/text_greeting"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:textAppearance="?attr/textAppearanceHeadlineSmall"
+                    android:textColor="@color/header_text"
+                    android:textStyle="bold" />
+
+                <TextView
+                    android:id="@+id/text_date"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="2dp"
+                    android:textAppearance="?attr/textAppearanceBodyMedium"
+                    android:textColor="@color/header_text_secondary" />
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="20dp"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        android:id="@+id/text_progress"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:textAppearance="?attr/textAppearanceTitleSmall"
+                        android:textColor="@color/header_text" />
+
+                    <TextView
+                        android:id="@+id/text_percent"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:textAppearance="?attr/textAppearanceTitleSmall"
+                        android:textColor="@color/header_indicator" />
+                </LinearLayout>
+
+                <com.google.android.material.progressindicator.LinearProgressIndicator
+                    android:id="@+id/progress_tasks"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="8dp"
+                    android:max="100"
+                    app:indicatorColor="@color/header_indicator"
+                    app:trackColor="@color/header_track"
+                    app:trackCornerRadius="4dp"
+                    app:trackThickness="8dp" />
+            </LinearLayout>
+        </com.google.android.material.card.MaterialCardView>
 
         <com.google.android.material.chip.ChipGroup
             android:id="@+id/chip_group_filter"
@@ -38,43 +111,67 @@
                 android:layout_height="wrap_content"
                 android:text="@string/filter_done" />
         </com.google.android.material.chip.ChipGroup>
+    </com.google.android.material.appbar.AppBarLayout>
 
-        <FrameLayout
+    <FrameLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        app:layout_behavior="@string/appbar_scrolling_view_behavior">
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/list_tasks"
             android:layout_width="match_parent"
-            android:layout_height="0dp"
-            android:layout_weight="1">
+            android:layout_height="match_parent"
+            android:clipToPadding="false"
+            android:paddingHorizontal="16dp"
+            android:paddingTop="4dp"
+            android:paddingBottom="104dp"
+            app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager" />
 
-            <androidx.recyclerview.widget.RecyclerView
-                android:id="@+id/list_tasks"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:clipToPadding="false"
-                android:paddingHorizontal="16dp"
-                android:paddingTop="4dp"
-                android:paddingBottom="96dp"
-                app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager" />
+        <LinearLayout
+            android:id="@+id/empty_state"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
+            android:layout_marginTop="24dp"
+            android:gravity="center_horizontal"
+            android:orientation="vertical"
+            android:paddingHorizontal="32dp"
+            android:visibility="gone">
+
+            <ImageView
+                android:layout_width="140dp"
+                android:layout_height="140dp"
+                android:importantForAccessibility="no"
+                app:srcCompat="@drawable/ic_empty_tasks" />
 
             <TextView
-                android:id="@+id/text_empty"
+                android:id="@+id/text_empty_title"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_gravity="center"
-                android:gravity="center"
-                android:padding="32dp"
-                android:text="@string/empty_list"
-                android:textAppearance="?attr/textAppearanceBodyLarge"
-                android:textColor="?attr/colorOnSurfaceVariant"
-                android:visibility="gone" />
-        </FrameLayout>
-    </LinearLayout>
+                android:layout_marginTop="16dp"
+                android:text="@string/empty_title"
+                android:textAppearance="?attr/textAppearanceTitleLarge" />
 
-    <com.google.android.material.floatingactionbutton.FloatingActionButton
+            <TextView
+                android:id="@+id/text_empty_message"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="4dp"
+                android:gravity="center"
+                android:text="@string/empty_message"
+                android:textAppearance="?attr/textAppearanceBodyMedium"
+                android:textColor="?attr/colorOnSurfaceVariant" />
+        </LinearLayout>
+    </FrameLayout>
+
+    <com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton
         android:id="@+id/fab_add"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="bottom|end"
         android:layout_margin="16dp"
-        android:contentDescription="@string/add_task"
-        app:srcCompat="@drawable/ic_add" />
+        android:text="@string/add_task"
+        app:icon="@drawable/ic_add" />
 
 </androidx.coordinatorlayout.widget.CoordinatorLayout>

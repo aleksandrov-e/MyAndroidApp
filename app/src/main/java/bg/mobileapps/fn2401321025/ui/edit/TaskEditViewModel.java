@@ -9,6 +9,7 @@ import androidx.lifecycle.ViewModel;
 import bg.mobileapps.fn2401321025.R;
 import bg.mobileapps.fn2401321025.data.TaskRepository;
 import bg.mobileapps.fn2401321025.data.local.Task;
+import bg.mobileapps.fn2401321025.domain.TaskCategory;
 import bg.mobileapps.fn2401321025.domain.TaskValidator;
 import bg.mobileapps.fn2401321025.ui.Event;
 
@@ -92,7 +93,7 @@ public class TaskEditViewModel extends ViewModel {
         }
     }
 
-    public void save(String title, String description, int priority) {
+    public void save(String title, String description, int priority, TaskCategory category) {
         TaskValidator.TitleError error = TaskValidator.validateTitle(title);
         if (error != TaskValidator.TitleError.NONE) {
             titleError.setValue(error == TaskValidator.TitleError.EMPTY
@@ -106,6 +107,7 @@ public class TaskEditViewModel extends ViewModel {
         task.title = title.trim();
         task.description = description == null ? "" : description.trim();
         task.priority = priority;
+        task.category = category.id;
         task.dueDate = dueDate.getValue();
         repository.save(task, () -> finished.setValue(new Event<>(true)));
     }

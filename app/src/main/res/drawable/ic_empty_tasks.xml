@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Илюстрация за празен списък: лист със задачи и голяма отметка. -->
+<vector xmlns:android="http://schemas.android.com/apk/res/android"
+    android:width="160dp"
+    android:height="160dp"
+    android:viewportWidth="160"
+    android:viewportHeight="160">
+    <path
+        android:fillColor="@color/md_primary_container"
+        android:pathData="M80,80m-72,0a72,72 0,1 1,144 0a72,72 0,1 1,-144 0" />
+    <path
+        android:fillColor="@color/md_surface_container_lowest"
+        android:pathData="M52,36h56a8,8 0,0 1,8 8v72a8,8 0,0 1,-8 8H52a8,8 0,0 1,-8 -8V44a8,8 0,0 1,8 -8z" />
+    <path
+        android:fillColor="@color/md_primary"
+        android:pathData="M56,54h10v10h-10zM56,75h10v10h-10zM56,96h10v10h-10z" />
+    <path
+        android:fillColor="@color/md_outline_variant"
+        android:pathData="M74,56h30v6h-30zM74,77h22v6h-22zM74,98h26v6h-26z" />
+    <path
+        android:fillColor="@color/header_indicator"
+        android:pathData="M116,116m-22,0a22,22 0,1 1,44 0a22,22 0,1 1,-44 0" />
+    <path
+        android:fillColor="#FFFFFF"
+        android:pathData="M112.5,123.2l-6.6,-6.6 -2.8,2.8 9.4,9.4 17,-17 -2.8,-2.8z" />
+</vector>

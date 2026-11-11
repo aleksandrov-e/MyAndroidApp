@@ -9,13 +9,19 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="vertical"
-        android:padding="16dp">
+        android:paddingHorizontal="16dp"
+        android:paddingTop="8dp"
+        android:paddingBottom="24dp">
 
         <com.google.android.material.textfield.TextInputLayout
             android:id="@+id/layout_title"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:hint="@string/hint_title"
+            app:boxCornerRadiusBottomEnd="16dp"
+            app:boxCornerRadiusBottomStart="16dp"
+            app:boxCornerRadiusTopEnd="16dp"
+            app:boxCornerRadiusTopStart="16dp"
             app:counterEnabled="true"
             app:counterMaxLength="80"
             app:errorEnabled="true">
@@ -45,7 +51,11 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="12dp"
-            android:hint="@string/hint_description">
+            android:hint="@string/hint_description"
+            app:boxCornerRadiusBottomEnd="16dp"
+            app:boxCornerRadiusBottomStart="16dp"
+            app:boxCornerRadiusTopEnd="16dp"
+            app:boxCornerRadiusTopStart="16dp">
 
             <com.google.android.material.textfield.TextInputEditText
                 android:id="@+id/input_description"
@@ -59,9 +69,70 @@
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_marginTop="24dp"
+            android:text="@string/label_category"
+            android:textAppearance="@style/TextAppearance.Tasks.SectionLabel" />
+
+        <com.google.android.material.chip.ChipGroup
+            android:id="@+id/chip_group_category"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="4dp"
+            app:checkedChip="@id/chip_category_personal"
+            app:selectionRequired="true"
+            app:singleSelection="true">
+
+            <com.google.android.material.chip.Chip
+                android:id="@+id/chip_category_personal"
+                style="@style/Widget.Material3.Chip.Filter"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/category_personal"
+                app:checkedIconVisible="false"
+                app:chipIcon="@drawable/ic_category_personal"
+                app:chipIconTint="@color/category_personal"
+                app:chipIconVisible="true" />
+
+            <com.google.android.material.chip.Chip
+                android:id="@+id/chip_category_study"
+                style="@style/Widget.Material3.Chip.Filter"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/category_study"
+                app:checkedIconVisible="false"
+                app:chipIcon="@drawable/ic_category_study"
+                app:chipIconTint="@color/category_study"
+                app:chipIconVisible="true" />
+
+            <com.google.android.material.chip.Chip
+                android:id="@+id/chip_category_work"
+                style="@style/Widget.Material3.Chip.Filter"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/category_work"
+                app:checkedIconVisible="false"
+                app:chipIcon="@drawable/ic_category_work"
+                app:chipIconTint="@color/category_work"
+                app:chipIconVisible="true" />
+
+            <com.google.android.material.chip.Chip
+                android:id="@+id/chip_category_shopping"
+                style="@style/Widget.Material3.Chip.Filter"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/category_shopping"
+                app:checkedIconVisible="false"
+                app:chipIcon="@drawable/ic_category_shopping"
+                app:chipIconTint="@color/category_shopping"
+                app:chipIconVisible="true" />
+        </com.google.android.material.chip.ChipGroup>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
             android:layout_marginTop="20dp"
             android:text="@string/label_priority"
-            android:textAppearance="?attr/textAppearanceLabelLarge" />
+            android:textAppearance="@style/TextAppearance.Tasks.SectionLabel" />
 
         <com.google.android.material.button.MaterialButtonToggleGroup
             android:id="@+id/toggle_priority"
@@ -102,7 +173,7 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="20dp"
             android:text="@string/label_due_date"
-            android:textAppearance="?attr/textAppearanceLabelLarge" />
+            android:textAppearance="@style/TextAppearance.Tasks.SectionLabel" />
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -116,7 +187,8 @@
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:text="@string/pick_due_date" />
+                android:text="@string/pick_due_date"
+                app:icon="@drawable/ic_event" />
 
             <com.google.android.material.button.MaterialButton
                 android:id="@+id/button_clear_due_date"
@@ -132,7 +204,9 @@
             android:id="@+id/button_save"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="28dp"
-            android:text="@string/save" />
+            android:layout_marginTop="32dp"
+            android:minHeight="56dp"
+            android:text="@string/save"
+            android:textAppearance="?attr/textAppearanceTitleMedium" />
     </LinearLayout>
 </ScrollView>

@@ -12,6 +12,7 @@ import java.util.List;
 import bg.mobileapps.fn2401321025.data.TaskRepository;
 import bg.mobileapps.fn2401321025.data.local.Task;
 import bg.mobileapps.fn2401321025.domain.TaskFilter;
+import bg.mobileapps.fn2401321025.domain.TaskStats;
 
 /** Състоянието на екрана със списъка: търсене + филтър върху задачите от Repository-то. */
 public class TaskListViewModel extends ViewModel {
@@ -22,8 +23,13 @@ public class TaskListViewModel extends ViewModel {
     private final MutableLiveData<TaskFilter> filter = new MutableLiveData<>(TaskFilter.ALL);
     private final MediatorLiveData<List<Task>> tasks = new MediatorLiveData<>();
 
+    private final LiveData<TaskStats> stats;
+
     public TaskListViewModel(TaskRepository repository) {
         this.repository = repository;
+
+        // Напредъкът се смята върху всички задачи, независимо от търсенето и филтъра.
+        stats = Transformations.map(repository.observeTasks(""), TaskStats::from);
 
         LiveData<List<Task>> searched = Transformations.switchMap(query, repository::observeTasks);
         tasks.addSource(searched, list -> tasks.setValue(currentFilter().apply(list)));
@@ -37,6 +43,10 @@ public class TaskListViewModel extends ViewModel {
 
     public LiveData<List<Task>> getTasks() {
         return tasks;
+    }
+
+    public LiveData<TaskStats> getStats() {
+        return stats;
     }
 
     public LiveData<TaskFilter> getFilter() {

@@ -31,7 +31,9 @@ public class AppContainer {
         Context appContext = context.getApplicationContext();
 
         AppDatabase database =
-                Room.databaseBuilder(appContext, AppDatabase.class, DATABASE_NAME).build();
+                Room.databaseBuilder(appContext, AppDatabase.class, DATABASE_NAME)
+                        .addMigrations(AppDatabase.MIGRATION_1_2)
+                        .build();
 
         TodoApi todoApi = new Retrofit.Builder()
                 .baseUrl(BASE_URL)

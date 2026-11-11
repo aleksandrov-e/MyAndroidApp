@@ -16,6 +16,7 @@ import java.util.List;
 import bg.mobileapps.fn2401321025.FakeTaskRepository;
 import bg.mobileapps.fn2401321025.data.local.Task;
 import bg.mobileapps.fn2401321025.domain.TaskFilter;
+import bg.mobileapps.fn2401321025.domain.TaskStats;
 
 public class TaskListViewModelTest {
 
@@ -93,6 +94,28 @@ public class TaskListViewModelTest {
 
         viewModel.restore(task);
         assertEquals(2, shown.size());
+    }
+
+    @Test
+    public void stats_countAllTasksRegardlessOfFilterAndQuery() {
+        TaskStats[] stats = new TaskStats[1];
+        viewModel.getStats().observeForever(value -> stats[0] = value);
+
+        viewModel.setFilter(TaskFilter.ACTIVE);
+        viewModel.setQuery("мляко");
+
+        assertEquals(new TaskStats(2, 1), stats[0]);
+    }
+
+    @Test
+    public void stats_updateWhenTaskIsFinished() {
+        TaskStats[] stats = new TaskStats[1];
+        viewModel.getStats().observeForever(value -> stats[0] = value);
+
+        viewModel.setDone(repository.find(1), true);
+
+        assertEquals(new TaskStats(2, 2), stats[0]);
+        assertTrue(stats[0].allDone());
     }
 
     @Test

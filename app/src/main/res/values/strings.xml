@@ -5,11 +5,22 @@
     <string name="title_new_task">Нова задача</string>
     <string name="title_edit_task">Редакция на задача</string>
 
+    <string name="greeting_morning">Добро утро!</string>
+    <string name="greeting_day">Добър ден!</string>
+    <string name="greeting_evening">Добър вечер!</string>
+    <string name="progress_done_of">Завършени %1$d от %2$d</string>
+    <string name="progress_all_done">Всичко е свършено. Браво!</string>
+    <string name="progress_no_tasks">Още нямаш задачи</string>
+    <string name="progress_percent">%1$d%%</string>
+
     <string name="filter_all">Всички</string>
     <string name="filter_active">Активни</string>
     <string name="filter_done">Завършени</string>
-    <string name="empty_list">Няма задачи.\nНатисни + за да добавиш първата.</string>
-    <string name="add_task">Добави задача</string>
+    <string name="empty_title">Списъкът е празен</string>
+    <string name="empty_message">Натисни „Нова задача“, за да добавиш първата.</string>
+    <string name="empty_filtered_title">Нищо не е намерено</string>
+    <string name="empty_filtered_message">Няма задачи за това търсене или филтър.</string>
+    <string name="add_task">Нова задача</string>
     <string name="mark_done">Отбележи като завършена</string>
     <string name="search">Търсене</string>
     <string name="search_hint">Търси в задачите…</string>
@@ -17,11 +28,17 @@
     <string name="undo">Отмени</string>
     <string name="delete_completed">Изтрий завършените</string>
     <string name="delete_completed_message">Всички завършени задачи ще бъдат изтрити.</string>
-    <string name="due_on">Срок: %1$s</string>
     <string name="due_overdue">Просрочена: %1$s</string>
+    <string name="due_date_icon">Краен срок</string>
+
+    <string name="category_personal">Лични</string>
+    <string name="category_study">Учене</string>
+    <string name="category_work">Работа</string>
+    <string name="category_shopping">Пазаруване</string>
 
     <string name="hint_title">Заглавие</string>
     <string name="hint_description">Описание (по желание)</string>
+    <string name="label_category">Категория</string>
     <string name="label_priority">Приоритет</string>
     <string name="priority_low">Нисък</string>
     <string name="priority_medium">Среден</string>

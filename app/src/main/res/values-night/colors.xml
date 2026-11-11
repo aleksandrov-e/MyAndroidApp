@@ -1,6 +1,42 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
+    <!-- Същата палитра за тъмна тема. -->
+    <color name="md_primary">#B4C4FF</color>
+    <color name="md_on_primary">#10286B</color>
+    <color name="md_primary_container">#2A418A</color>
+    <color name="md_on_primary_container">#DBE2FF</color>
+    <color name="md_secondary">#FFB86B</color>
+    <color name="md_on_secondary">#472A00</color>
+    <color name="md_secondary_container">#663E00</color>
+    <color name="md_on_secondary_container">#FFDDB8</color>
+    <color name="md_tertiary">#80CBC4</color>
+    <color name="md_on_tertiary">#003731</color>
+    <color name="md_tertiary_container">#005048</color>
+    <color name="md_on_tertiary_container">#B2DFDB</color>
+    <color name="md_error">#FFB4AB</color>
+    <color name="md_on_error">#690005</color>
+    <color name="md_error_container">#93000A</color>
+    <color name="md_on_error_container">#FFDAD6</color>
+    <color name="md_surface">#111318</color>
+    <color name="md_on_surface">#E3E2E9</color>
+    <color name="md_surface_variant">#454853</color>
+    <color name="md_on_surface_variant">#C5C6D3</color>
+    <color name="md_outline">#8F909D</color>
+    <color name="md_outline_variant">#454853</color>
+    <color name="md_surface_container_lowest">#0C0E13</color>
+    <color name="md_surface_container_low">#1C1E25</color>
+    <color name="md_surface_container">#20222A</color>
+    <color name="md_surface_container_high">#2A2C34</color>
+    <color name="md_surface_container_highest">#35373F</color>
+
+    <color name="header_background">#2A418A</color>
+
     <color name="priority_low">#81C784</color>
     <color name="priority_medium">#FFB74D</color>
     <color name="priority_high">#E57373</color>
+
+    <color name="category_personal">#AAB6FF</color>
+    <color name="category_study">#80CBC4</color>
+    <color name="category_work">#CE93D8</color>
+    <color name="category_shopping">#FFB74D</color>
 </resources>

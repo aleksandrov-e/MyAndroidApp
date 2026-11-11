@@ -2,6 +2,7 @@ package bg.mobileapps.fn2401321025.data.local;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.room.ColumnInfo;
 import androidx.room.Entity;
 import androidx.room.PrimaryKey;
 
@@ -34,6 +35,10 @@ public class Task {
 
     public long createdAt;
 
+    /** id на TaskCategory; 0 = "Лични". */
+    @ColumnInfo(defaultValue = "0")
+    public int category;
+
     public Task copy() {
         Task copy = new Task();
         copy.id = id;
@@ -43,6 +48,7 @@ public class Task {
         copy.dueDate = dueDate;
         copy.done = done;
         copy.createdAt = createdAt;
+        copy.category = category;
         return copy;
     }
 
@@ -59,6 +65,7 @@ public class Task {
                 && priority == task.priority
                 && done == task.done
                 && createdAt == task.createdAt
+                && category == task.category
                 && title.equals(task.title)
                 && description.equals(task.description)
                 && Objects.equals(dueDate, task.dueDate);
@@ -66,6 +73,6 @@ public class Task {
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, title, description, priority, dueDate, done, createdAt);
+        return Objects.hash(id, title, description, priority, dueDate, done, createdAt, category);
     }
 }
