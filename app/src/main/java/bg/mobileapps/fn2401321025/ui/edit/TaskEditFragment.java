@@ -1,5 +1,6 @@
 package bg.mobileapps.fn2401321025.ui.edit;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
@@ -30,7 +31,9 @@ import bg.mobileapps.fn2401321025.R;
 import bg.mobileapps.fn2401321025.data.local.Task;
 import bg.mobileapps.fn2401321025.databinding.FragmentTaskEditBinding;
 import bg.mobileapps.fn2401321025.domain.DueDates;
+import bg.mobileapps.fn2401321025.domain.ShareText;
 import bg.mobileapps.fn2401321025.domain.TaskCategory;
+import bg.mobileapps.fn2401321025.ui.CategoryUi;
 import bg.mobileapps.fn2401321025.ui.ViewModelFactory;
 
 /** Втори екран: създаване на нова задача или редакция/изтриване на съществуваща. */
@@ -71,10 +74,8 @@ public class TaskEditFragment extends Fragment {
         setUpInputs();
         reattachDatePickerListener();
 
-        if (isEditing()) {
-            requireActivity().addMenuProvider(
-                    new EditMenuProvider(), getViewLifecycleOwner(), Lifecycle.State.RESUMED);
-        }
+        requireActivity().addMenuProvider(
+                new EditMenuProvider(), getViewLifecycleOwner(), Lifecycle.State.RESUMED);
     }
 
     @Override
@@ -231,6 +232,43 @@ public class TaskEditFragment extends Fragment {
         }
     }
 
+    /** Изпраща текущото съдържание на формата през системния прозорец за споделяне. */
+    private void shareTask() {
+        String title = String.valueOf(binding.inputTitle.getText()).trim();
+        if (title.isEmpty()) {
+            Snackbar.make(binding.getRoot(), R.string.share_needs_title, Snackbar.LENGTH_SHORT)
+                    .show();
+            return;
+        }
+        Long dueDate = viewModel.getDueDate().getValue();
+        int priorityLabel;
+        switch (selectedPriority()) {
+            case Task.PRIORITY_HIGH:
+                priorityLabel = R.string.priority_high;
+                break;
+            case Task.PRIORITY_LOW:
+                priorityLabel = R.string.priority_low;
+                break;
+            default:
+                priorityLabel = R.string.priority_medium;
+        }
+
+        String text = ShareText.compose(
+                getString(R.string.share_header, title),
+                String.valueOf(binding.inputDescription.getText()),
+                getString(R.string.share_category,
+                        getString(CategoryUi.labelRes(selectedCategory()))),
+                getString(R.string.share_priority, getString(priorityLabel)),
+                dueDate == null ? null : getString(R.string.share_due,
+                        DueDates.format(dueDate, Locale.getDefault())));
+
+        Intent send = new Intent(Intent.ACTION_SEND)
+                .setType("text/plain")
+                .putExtra(Intent.EXTRA_SUBJECT, title)
+                .putExtra(Intent.EXTRA_TEXT, text);
+        startActivity(Intent.createChooser(send, getString(R.string.share_chooser_title)));
+    }
+
     private void confirmDelete() {
         TaskEditViewModel model = viewModel;
         new MaterialAlertDialogBuilder(requireContext())
@@ -246,10 +284,16 @@ public class TaskEditFragment extends Fragment {
         @Override
         public void onCreateMenu(@NonNull Menu menu, @NonNull MenuInflater inflater) {
             inflater.inflate(R.menu.menu_task_edit, menu);
+            // Нова задача още няма какво да се трие.
+            menu.findItem(R.id.action_delete).setVisible(isEditing());
         }
 
         @Override
         public boolean onMenuItemSelected(@NonNull MenuItem item) {
+            if (item.getItemId() == R.id.action_share) {
+                shareTask();
+                return true;
+            }
             if (item.getItemId() == R.id.action_delete) {
                 confirmDelete();
                 return true;

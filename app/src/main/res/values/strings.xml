@@ -22,6 +22,8 @@
     <string name="empty_filtered_message">Няма задачи за това търсене или филтър.</string>
     <string name="add_task">Нова задача</string>
     <string name="mark_done">Отбележи като завършена</string>
+    <string name="theme_dark">Тъмна тема</string>
+    <string name="theme_light">Светла тема</string>
     <string name="search">Търсене</string>
     <string name="search_hint">Търси в задачите…</string>
     <string name="task_deleted">Задачата е изтрита</string>
@@ -49,6 +51,13 @@
     <string name="suggest_task">Предложи ми задача (от интернет)</string>
     <string name="suggestion_error">Неуспешна заявка. Провери интернет връзката.</string>
     <string name="save">Запази</string>
+    <string name="share_task">Сподели задачата</string>
+    <string name="share_chooser_title">Сподели чрез</string>
+    <string name="share_needs_title">Въведи заглавие, за да споделиш задачата</string>
+    <string name="share_header">Задача: %1$s</string>
+    <string name="share_category">Категория: %1$s</string>
+    <string name="share_priority">Приоритет: %1$s</string>
+    <string name="share_due">Краен срок: %1$s</string>
     <string name="delete_task">Изтрий задачата</string>
     <string name="delete_task_message">Задачата ще бъде изтрита завинаги.</string>
     <string name="delete">Изтрий</string>

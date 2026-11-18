@@ -32,6 +32,7 @@ import bg.mobileapps.fn2401321025.databinding.FragmentTaskListBinding;
 import bg.mobileapps.fn2401321025.domain.Greeting;
 import bg.mobileapps.fn2401321025.domain.TaskFilter;
 import bg.mobileapps.fn2401321025.domain.TaskStats;
+import bg.mobileapps.fn2401321025.ui.ThemeSettings;
 import bg.mobileapps.fn2401321025.ui.ViewModelFactory;
 import bg.mobileapps.fn2401321025.ui.edit.TaskEditFragment;
 
@@ -204,6 +205,12 @@ public class TaskListFragment extends Fragment implements TaskAdapter.Listener {
         public void onCreateMenu(@NonNull Menu menu, @NonNull MenuInflater inflater) {
             inflater.inflate(R.menu.menu_task_list, menu);
 
+            // В тъмна тема бутонът връща светлата и обратно.
+            MenuItem themeItem = menu.findItem(R.id.action_toggle_theme);
+            boolean night = ThemeSettings.isNight(requireContext());
+            themeItem.setIcon(night ? R.drawable.ic_light_mode : R.drawable.ic_dark_mode);
+            themeItem.setTitle(night ? R.string.theme_light : R.string.theme_dark);
+
             MenuItem searchItem = menu.findItem(R.id.action_search);
             SearchView searchView = (SearchView) searchItem.getActionView();
             searchView.setQueryHint(getString(R.string.search_hint));
@@ -232,6 +239,10 @@ public class TaskListFragment extends Fragment implements TaskAdapter.Listener {
 
         @Override
         public boolean onMenuItemSelected(@NonNull MenuItem item) {
+            if (item.getItemId() == R.id.action_toggle_theme) {
+                ThemeSettings.toggle(requireContext());
+                return true;
+            }
             if (item.getItemId() == R.id.action_delete_completed) {
                 confirmDeleteCompleted();
                 return true;
